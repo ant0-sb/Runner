@@ -5,7 +5,6 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
-
     [SerializeField]
     private UnityEvent playerConnected;
 
@@ -20,10 +19,8 @@ public class GameManager : MonoBehaviour
             Debug.Log("Successfully Lootlocker Session");
             connected = true;
         
-        
           });
           yield return new WaitUntil(()=> connected);
-          playerConnected.Invoke();
-  
+          playerConnected.Invoke(); 
     }
 }

@@ -48,7 +48,9 @@ public class GameOver : MonoBehaviour
            
         });
         yield return new WaitUntil(()=> nameSet.HasValue);
+
         if(!nameSet.Value) yield break;
+
         bool? scoreSubmitted = null;
         LootLockerSDKManager.SubmitScore("",score,leaderboardID.ToString(), (reponse) =>{
             if(reponse.success){
@@ -64,8 +66,8 @@ public class GameOver : MonoBehaviour
         yield return new  WaitUntil(()=> scoreSubmitted.HasValue);
         if(!scoreSubmitted.Value) yield break;
         GetLeaderboard();
-
     }
+
     private void GetLeaderboard(){
         LootLockerSDKManager.GetScoreList(leaderboardID.ToString(),leaderboardTopCount,(response)=>{
             if(response.success){
@@ -79,11 +81,9 @@ public class GameOver : MonoBehaviour
 
                     if(player.name!= ""){
                         leaderboardName += player.name + "\n";
-    
                     }
                     else {
                         leaderboardName += player.id + "\n";
-    
                     }
                     leaderboardScore += members[i].score + "\n";
     

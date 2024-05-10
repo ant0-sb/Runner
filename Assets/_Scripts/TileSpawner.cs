@@ -5,12 +5,24 @@ namespace TempleRun { //allows every file under it to access each other
 
 public class TileSpawner : MonoBehaviour
 {
+    /// <summary>
+    /// Number of tiles to spawn at the beginning
+    /// </summary>
     [SerializeField]
-    private int tileStartCount = 10; //nb of straight tiles to spawn at start
+    private int tileStartCount = 10; 
+    
+    /// <summary>
+    /// Min nb of straight tiles (avoid endlessly going straight)
+    /// </summary>
     [SerializeField]
-    private int minimumStraightTiles = 3; //minimum nb of straight tiles before spawning a turn tile
+    private int minimumStraightTiles = 3; 
+
+    /// <summary>
+    /// Max nb of straight tiles (avoid endlessly going straight)
+    /// </summary>
     [SerializeField]
-    private int maximumStraightTiles = 15; //max nb (avoid enflessly going straight)
+    private int maximumStraightTiles = 15; 
+    
     [SerializeField] 
     private GameObject startingTile;
     [SerializeField]
@@ -18,14 +30,25 @@ public class TileSpawner : MonoBehaviour
     [SerializeField]
     private List<GameObject> obstacles;
 
-    private float probaObstacle = 0.2f; //20% chance of spawning an obstacle
+    /// <summary>
+    /// Probability of spawning an obstacle on a tile
+    /// </summary>
+    private float probaObstacle = 0.2f;
 
     private Vector3 currentTileLocation = Vector3.zero;
     private Vector3 currentTileDirection = Vector3.forward;
-    private GameObject prevTile; //keep track of the last tile, at the moment of turning for exemple
 
-    private List<GameObject> currentTiles; //all tiles in the scene
-    private List<GameObject> currentObstacles; //all obstacles in the scene
+    /// <summary>
+    /// Keep track of the last tile, at the moment of turning for exemple
+    /// </summary>
+    private GameObject prevTile;
+
+    private List<GameObject> currentTiles;
+
+    /// <summary>
+    /// All obstacles in the scene
+    /// </summary>
+    private List<GameObject> currentObstacles;
 
     private void Start() { //initialisation of all variables 
         currentTiles = new List<GameObject>();
@@ -36,31 +59,41 @@ public class TileSpawner : MonoBehaviour
         for (int i=0; i<tileStartCount; i++) {
             SpawnTile(startingTile.GetComponent<Tile>()); 
             //gives only the tile component, so we don't have to keep referencing every tile spawning
-            //boolean value to indicate if we want an obstacle on the new tile
         }
 
         SpawnTile(SelectRandomGameObjectFromList(turnTiles).GetComponent<Tile>());
     }
 
+    /// <summary>
+    /// Spawns a tile at the current location and updates the current location
+    /// <para> 
+    /// Boolean param to indicate if we want an obstacle on the new tile
+    /// </para>
+    /// </summary>
+    /// <param name="tile"></param>
+    /// <param name="spawnObstacle"></param>
     private void SpawnTile(Tile tile, bool spawnObstacle = false) {
         Quaternion newTileRotation = tile.gameObject.transform.rotation * Quaternion.LookRotation(currentTileDirection, Vector3.up);
-        //current direction, on which we apply the rotation of the next tile so that it points in the right direction (Vector3.up is the Y axis)
-        //revenir sur Quaternion!!!
+        //current direction, on which we apply the rotation of the next tile so that it points in the correct direction (Vector3.up is the Y axis on which we rotate)
+
         prevTile = GameObject.Instantiate(tile.gameObject, currentTileLocation, newTileRotation); 
         currentTiles.Add(prevTile);
 
         if (spawnObstacle) SpawnObstacle();
 
-        if (tile.type == TileType.STRAIGHT) {
+        if (tile.type == TileType.STRAIGHT) { // currentTileLocation already uptaded if TileType != STRAIGHT (i.e, turning) in AddNewDirection 
             currentTileLocation += Vector3.Scale(prevTile.GetComponent<Renderer>().bounds.size, currentTileDirection); 
-            //moving the "currentLocation" 1/2 of a straight tile forward in the same direction (since the mark of location is the center of the tile)
-            //calculus is for exemple : (4,1,10)*(0,0,1) -> (0,0,10) for a tile (lenght 10 units, width 4, height 1)
+            //moving the "currentLocation" 1 straight tile forward in the current direction
+            //calculus is for exemple : (4,1,10)*(0,0,1) -> (0,0,10) for a tile (lenght 10 units, width 4, height 1) that we add on currentTileLocation
             //(0,0,1) is the direction of going straight forward, (1,0,0) is going right
         }
     }
 
+    /// <summary>
+    /// Avoid the old tiles to be seen by player if by any chance the player ends up going back
+    /// </summary>
     private void DeletePreviousTile() {
-        //check to do "object pull" instead of destroying and creating new ones ?
+        //TO DO: check "object pull" instead of destroying and creating new ones
         while (currentTiles.Count != 1) {
             GameObject tile = currentTiles[0];
             currentTiles.RemoveAt(0);
@@ -74,8 +107,12 @@ public class TileSpawner : MonoBehaviour
             Destroy(obstacle);
         }
     }
-    //avoid the old tiles to be seen if by random the player goes in a circle
-
+    /// <summary>
+    /// Sets the new direction
+    /// <para>
+    /// Deletes the previous tile and determining placement of the new one
+    /// </summary>
+    /// <param name="direction"></param>
     public void AddNewDirection(Vector3 direction) {
         currentTileDirection = direction;
         DeletePreviousTile();
@@ -84,7 +121,7 @@ public class TileSpawner : MonoBehaviour
         if (prevTile.GetComponent<Tile>().type == TileType.SIDEWAYS) {
             tilePlacementScale = Vector3.Scale(prevTile.GetComponent<Renderer>().bounds.size /2 + (Vector3.one * startingTile.GetComponent<BoxCollider>().size.z /2), currentTileDirection);
         }
-        else {
+        else { // left or right tiles
             tilePlacementScale = Vector3.Scale((prevTile.GetComponent<Renderer>().bounds.size) -(Vector3.one * 2) + (Vector3.one * startingTile.GetComponent<BoxCollider>().size.z /2), currentTileDirection);
         }
         //we calculate the position of the next tile depending of the type of the one we just turned on

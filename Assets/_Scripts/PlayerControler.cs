@@ -87,6 +87,10 @@ public class PlayerControler : MonoBehaviour
         gravity = initialGravityValue;
     }
 
+/// <summary>
+///  Makes player and tiles turn
+/// </summary>
+/// <param name="context"></param>
     private void PlayerTurn(InputAction.CallbackContext context) {
         Vector3? turnPosition = CheckTurn(context.ReadValue<float>()); //returns 1 or -1 (axis value) depending of the key pressed
         if (!turnPosition.HasValue) {
@@ -112,8 +116,14 @@ public class PlayerControler : MonoBehaviour
         return null;
     }
 
+/// <summary>
+/// Makes the player turn
+/// </summary>
+/// <param name="turnValue"></param>
+/// <param name="turnPosition"></param>
     private void Turn(float turnValue, Vector3 turnPosition) {
         Vector3 tempPlayerPosition = new Vector3(turnPosition.x, transform.position.y, turnPosition.z);
+        // we disable the character controller to move the player to the pivot point of the tile otherwise it doesn't work
         controller.enabled = false;
         transform.position = tempPlayerPosition;
         controller.enabled = true;
@@ -134,6 +144,7 @@ public class PlayerControler : MonoBehaviour
 
     private void PlayerSlide(InputAction.CallbackContext context) {
         if (!sliding && IsGrounded()) {
+            // Coroutine allows to wait for the animation to finish before setting the collider back to normal
             StartCoroutine(Slide());
         }
     }
@@ -160,12 +171,13 @@ public class PlayerControler : MonoBehaviour
     }
 
     private void Update() {
+        // casting a long ray to check if the player is "grounded" even if the player is jumping
         if(!IsGrounded(20f)){
             GameOver();
             return;
         }
 
-        //Score func
+        //Score functionality
         score += scoreMultiplier * Time.deltaTime;
         scoreUpdateEvent.Invoke((int)score);
         controller.Move(transform.forward * playerSpeed * Time.deltaTime);
@@ -181,7 +193,7 @@ public class PlayerControler : MonoBehaviour
     private bool IsGrounded(float length = 0.2f) {
         Vector3 raycastOriginFirst = transform.position;
         raycastOriginFirst.y -= controller.height / 2f;
-        raycastOriginFirst.y += 0.1f;
+        raycastOriginFirst.y += 0.1f; // adding a little offset to the raycast origin so that it doesn't accidently go through the ground
 
         Vector3 raycastOriginSecond = raycastOriginFirst;
         raycastOriginFirst -= transform.forward * 0.2f;
@@ -205,12 +217,7 @@ public class PlayerControler : MonoBehaviour
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit){
-        if(((1<<hit.collider.gameObject.layer) & obstacleLayer)!=0){
-            GameOver();
-           
-        }
-
-
+        if(((1<<hit.collider.gameObject.layer) & obstacleLayer)!=0) GameOver();  
     }
 }
 
