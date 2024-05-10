@@ -837,7 +837,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557564421}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15954372, y: -0.000000016985986, z: 0.0000000027451705, w: 0.9871909}
+  m_LocalRotation: {x: 0.15954372, y: 0.000000016985982, z: -0.0000000027451699, w: 0.9871909}
   m_LocalPosition: {x: 0, y: 4.564, z: -6.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1130,6 +1130,7 @@ MonoBehaviour:
   slideAnimationClip: {fileID: 7400000, guid: 4637d32de21804b4299cb08a77ae0490, type: 2}
   scoreMultiplier: 10
   playerSpeed: 0.91
+  mesh: {fileID: 1562544459}
   turnEvent:
     m_PersistentCalls:
       m_Calls:
@@ -1892,7 +1893,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1403188708}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15954372, y: -0.000000016985986, z: 0.0000000027451705, w: 0.9871909}
+  m_LocalRotation: {x: 0.15954372, y: 0.000000016985982, z: -0.0000000027451699, w: 0.9871909}
   m_LocalPosition: {x: 0, y: 4.564, z: -6.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3035,7 +3036,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1888164338}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 49f1770f94a3a47418786ba411206920, type: 3}
   m_Name: 

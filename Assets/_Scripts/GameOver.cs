@@ -3,6 +3,7 @@ using UnityEngine;
 using LootLocker.Requests;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class GameOver : MonoBehaviour
 {
@@ -24,7 +25,7 @@ public class GameOver : MonoBehaviour
         this.score = score;
         scoreText.text =score.ToString();
         GetLeaderboard();
-
+        AddXP(score);
     }
 
     public void SubmitScore(){
@@ -72,6 +73,7 @@ public class GameOver : MonoBehaviour
                 string leaderboardName = "";
                 string leaderboardScore = "";
                 LootLockerLeaderboardMember[] members= response.items;
+                //TO DO: check members.Length in case leaderboard is empty
                 for(int i =0; i< members.Length; ++i){
                     LootLockerPlayer player = members[i].player;
                     if(player ==null) continue;
@@ -96,13 +98,63 @@ public class GameOver : MonoBehaviour
 
 
     public void AddXP(int score){
-    
+        string progressionKey = "skins";
+        // If it's the player's first time, we need to register him in the skin progression system
+        LootLockerSDKManager.RegisterPlayerProgression(progressionKey, (response) =>
+        {
+            if(!response.success)
+            {
+                Debug.Log("error regisering progression");
+                Debug.Log(response.errorData.ToString());
+                return;
+            }
+            
+            Debug.Log("progression registered successfully");
+        });
+
+        LootLockerSDKManager.AddPointsToPlayerProgression(progressionKey, (ulong) score, response =>
+        {
+            if (!response.success) {
+                Debug.Log("failed adding points to progression");
+            }
+
+            // If the awarded_tiers array contains any items that means the player leveled up
+            // There can also be multiple level-ups at once
+            if (response.awarded_tiers.Any())
+            {
+                foreach (var awardedTier in response.awarded_tiers)
+                {
+                    Debug.Log($"Reached level {awardedTier.step}!");
+
+                    foreach (var assetReward in awardedTier.rewards.asset_rewards)
+                    {
+                        Debug.Log($"Rewarded with an asset, id: {assetReward.asset_id}!");
+                    }
+                    
+                    foreach (var progressionPointsReward in awardedTier.rewards.progression_points_rewards)
+                    {
+                        Debug.Log($"Rewarded with {progressionPointsReward.amount} bonus points in {progressionPointsReward.progression_name} progression!");
+                    }
+                    
+                    foreach (var progressionResetReward in awardedTier.rewards.progression_reset_rewards)
+                    {
+                        Debug.Log($"Progression {progressionResetReward.progression_name} has been reset as a reward!");
+                    }
+                }
+            }
+        });
+        // LootLockerSDKManager.SubmitXp(score,(response)=>{
+        //     if(response.success){
+        //         Debug.Log("successfully added XP");
+        //     }
+        //     else{
+        //         Debug.Log("unsuccessfully added XP");
+        //     }
+        // });
     }
 
     public void ReloadScene(){
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-
-    
 
 }

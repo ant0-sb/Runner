@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using LootLocker.Requests;
 
 namespace TempleRun.Player {
 
@@ -33,6 +34,9 @@ public class PlayerControler : MonoBehaviour
     private float scoreMultiplier =10f;
     [SerializeField]
     private float playerSpeed;
+    [SerializeField]
+    private GameObject mesh;
+
     private float gravity;
     private Vector3 movementDirection = Vector3.forward;
     private Vector3 playerVelocity;
@@ -85,8 +89,29 @@ public class PlayerControler : MonoBehaviour
     private void Start() {
         playerSpeed = initialPlayerSpeed;
         gravity = initialGravityValue;
+        StartCoroutine(ChangePlayerMaterial());
     }
 
+    private IEnumerator ChangePlayerMaterial() {
+        string color = "";
+        bool? playerSkinRequest = null;
+        LootLockerSDKManager.GetSingleKeyPersistentStorage("skin", (response) => {
+            if (response.success) {
+                Debug.Log("successfully retrieved player storage");
+                color = response.payload.value;
+                playerSkinRequest = true;
+            }else {
+                Debug.Log("unsuccessfully retrieved player storage");
+                playerSkinRequest = false;
+            }
+        });
+        yield return new WaitUntil(() => playerSkinRequest.HasValue);
+        if (playerSkinRequest.Value) {
+            if (UnityEngine.ColorUtility.TryParseHtmlString(color, out Color newColor)) {
+                mesh.GetComponent<MeshRenderer>().material.color = newColor;
+            }
+        }
+    }
 /// <summary>
 ///  Makes player and tiles turn
 /// </summary>
