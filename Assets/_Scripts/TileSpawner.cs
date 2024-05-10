@@ -33,7 +33,7 @@ public class TileSpawner : MonoBehaviour
     /// <summary>
     /// Probability of spawning an obstacle on a tile
     /// </summary>
-    private float probaObstacle = 0.2f;
+    private float probaObstacle = 0.4f;
 
     private Vector3 currentTileLocation = Vector3.zero;
     private Vector3 currentTileDirection = Vector3.forward;

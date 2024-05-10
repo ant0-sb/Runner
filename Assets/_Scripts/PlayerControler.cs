@@ -10,13 +10,13 @@ namespace TempleRun.Player {
 public class PlayerControler : MonoBehaviour
 {
     [SerializeField]
-    private float initialPlayerSpeed = 4f;
+    private float initialPlayerSpeed = 8f;
     [SerializeField]
     private float maximumPlayerSpeed = 30f;
     [SerializeField]
-    private float playerSpeedIncreaseRate = 0.1f;
+    private float playerSpeedIncreaseRate = 0.4f;
     [SerializeField]
-    private float jumpHeight = 1.0f;
+    private float jumpHeight = 2.0f;
     [SerializeField]
     private float initialGravityValue = -9.81f;
     [SerializeField]
@@ -161,7 +161,7 @@ public class PlayerControler : MonoBehaviour
         
         //play the sliding animation
         animator.Play(slidingAnimationId);
-        yield return new WaitForSeconds(slideAnimationClip.length);
+        yield return new WaitForSeconds(slideAnimationClip.length / animator.speed);
 
         //set the character controller collider back to normal after sliding
         controller.height *= 2;
@@ -188,6 +188,15 @@ public class PlayerControler : MonoBehaviour
 
         playerVelocity.y += gravity * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
+
+        if (playerSpeed < maximumPlayerSpeed) {
+            playerSpeed += playerSpeedIncreaseRate * Time.deltaTime;
+            gravity = initialGravityValue - playerSpeed; //increases the gravity as the player speed increases to make the jump more realistic
+        }
+
+        if (animator.speed < 1.25f){
+            animator.speed += (1/playerSpeed)*Time.deltaTime; //increases the animation speed as the player speed increases to make the game more challenging
+        }
     }
 
     private bool IsGrounded(float length = 0.2f) {

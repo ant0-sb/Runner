@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 public class GameOver : MonoBehaviour
 {
     [SerializeField]
-    private GameObject gameOverCanvas; 
-    [SerializeField]
     private TMP_InputField inputField; 
     [SerializeField]
     private TextMeshProUGUI leaderboardScoreText;
@@ -23,10 +21,9 @@ public class GameOver : MonoBehaviour
 
 
     public void StopGame(int score){
-        gameOverCanvas.SetActive(true);
         this.score = score;
         scoreText.text =score.ToString();
-        SubmitScore();
+        GetLeaderboard();
 
     }
 
@@ -49,7 +46,7 @@ public class GameOver : MonoBehaviour
         });
         yield return new WaitUntil(()=> nameSet.HasValue);
 
-        if(!nameSet.Value) yield break;
+        //if(!nameSet.Value) yield break;
 
         bool? scoreSubmitted = null;
         LootLockerSDKManager.SubmitScore("",score,leaderboardID.ToString(), (reponse) =>{
