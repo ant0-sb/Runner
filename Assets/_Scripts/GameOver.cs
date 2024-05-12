@@ -15,6 +15,10 @@ public class GameOver : MonoBehaviour
     private TextMeshProUGUI leaderboardNameText;
     [SerializeField]
     private TextMeshProUGUI scoreText;
+    [SerializeField]
+    private AudioSource clickSound;
+    [SerializeField]
+    private AudioSource deathSound;
 
     private int score = 0;
     private int leaderboardID = 22178;
@@ -24,6 +28,7 @@ public class GameOver : MonoBehaviour
     public void StopGame(int score){
         this.score = score;
         scoreText.text =score.ToString();
+        deathSound.Play();
         GetLeaderboard();
         AddXP(score);
     }
@@ -154,7 +159,12 @@ public class GameOver : MonoBehaviour
     }
 
     public void ReloadScene(){
+        clickSound.Play();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    public void QuitGame(){
+        Debug.Log("Quitting game...");
+        Application.Quit();
+    }
 }

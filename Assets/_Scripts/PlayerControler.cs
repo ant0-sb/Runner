@@ -36,6 +36,11 @@ public class PlayerControler : MonoBehaviour
     private float playerSpeed;
     [SerializeField]
     private GameObject mesh;
+    [SerializeField]
+    private AudioSource gameMusic;
+    [SerializeField]
+    private AudioSource jumpSound;
+
 
     private float gravity;
     private Vector3 movementDirection = Vector3.forward;
@@ -90,6 +95,7 @@ public class PlayerControler : MonoBehaviour
         playerSpeed = initialPlayerSpeed;
         gravity = initialGravityValue;
         StartCoroutine(ChangePlayerMaterial());
+        gameMusic.Play();
     }
 
     private IEnumerator ChangePlayerMaterial() {
@@ -164,6 +170,7 @@ public class PlayerControler : MonoBehaviour
             //SUVAT equation v^2 = vinit^2 + 2*acceleration*distance
             //-3 because gravity is negative
             controller.Move(playerVelocity * Time.deltaTime);
+            jumpSound.Play();
         }
     }
 
@@ -245,6 +252,7 @@ public class PlayerControler : MonoBehaviour
     }
 
     private void GameOver(){
+        gameMusic.Stop();
         Debug.Log("game over");
         gameOverEvent.Invoke((int)score);
         gameObject.SetActive(false);

@@ -23,4 +23,9 @@ public class GameManager : MonoBehaviour
           yield return new WaitUntil(()=> connected);
           playerConnected.Invoke(); 
     }
+
+    public void QuitGame(){
+        Debug.Log("Quitting game...");
+        Application.Quit();
+    }
 }
