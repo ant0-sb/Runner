@@ -18,6 +18,18 @@ public class LootLockerManager : MonoBehaviour
             }
             Debug.Log("Successfully Lootlocker Session");
             connected = true;
+            // If it's the player's first time, we need to register him in the skin progression system
+            LootLockerSDKManager.RegisterPlayerProgression("skins", (response) =>
+            {
+                if(!response.success)
+                {
+                    Debug.Log("error regisering progression");
+                    Debug.Log(response.errorData.ToString());
+                    return;
+                }
+            
+            Debug.Log("progression registered successfully");
+        });
         
           });
           yield return new WaitUntil(()=> connected);

@@ -106,7 +106,8 @@ public class PlayerControler : MonoBehaviour
         LootLockerSDKManager.GetSingleKeyPersistentStorage("skin", (response) => {
             if (response.success) {
                 Debug.Log("successfully retrieved player storage");
-                color = response.payload.value;
+                if (response.payload is not null) color = response.payload.value;
+                else Debug.Log("player storage is null"); //normally not possible as there is the white basic skin
                 playerSkinRequest = true;
             }else {
                 Debug.Log("unsuccessfully retrieved player storage");

@@ -104,19 +104,6 @@ public class LeaderboardManager : MonoBehaviour
 
     public void AddXP(int score){
         string progressionKey = "skins";
-        // If it's the player's first time, we need to register him in the skin progression system
-        LootLockerSDKManager.RegisterPlayerProgression(progressionKey, (response) =>
-        {
-            if(!response.success)
-            {
-                Debug.Log("error regisering progression");
-                Debug.Log(response.errorData.ToString());
-                return;
-            }
-            
-            Debug.Log("progression registered successfully");
-        });
-
         LootLockerSDKManager.AddPointsToPlayerProgression(progressionKey, (ulong) score, response =>
         {
             if (!response.success) {
