@@ -3,7 +3,7 @@ using UnityEngine;
 using LootLocker.Requests;
 using UnityEngine.Events;
 
-public class GameManager : MonoBehaviour
+public class LootLockerManager : MonoBehaviour
 {
     [SerializeField]
     private UnityEvent playerConnected;

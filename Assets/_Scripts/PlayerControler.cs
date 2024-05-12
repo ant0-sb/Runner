@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using LootLocker.Requests;
+using UnityEngine.SceneManagement;
+
 
 namespace TempleRun.Player {
 
@@ -254,7 +256,8 @@ public class PlayerControler : MonoBehaviour
     private void GameOver(){
         gameMusic.Stop();
         Debug.Log("game over");
-        gameOverEvent.Invoke((int)score);
+        PlayerPrefs.SetInt("Score", (int)score);
+        SceneManager.LoadScene("Leaderboard");
         gameObject.SetActive(false);
     }
 

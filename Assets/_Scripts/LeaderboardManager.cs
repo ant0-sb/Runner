@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.Linq;
 
-public class GameOver : MonoBehaviour
+public class LeaderboardManager : MonoBehaviour
 {
     [SerializeField]
     private TMP_InputField inputField; 
@@ -25,8 +25,8 @@ public class GameOver : MonoBehaviour
     private int leaderboardTopCount = 10;
 
 
-    public void StopGame(int score){
-        this.score = score;
+    public void Start(){
+        this.score = PlayerPrefs.GetInt("Score");;
         scoreText.text =score.ToString();
         deathSound.Play();
         GetLeaderboard();
@@ -156,11 +156,6 @@ public class GameOver : MonoBehaviour
         //         Debug.Log("unsuccessfully added XP");
         //     }
         // });
-    }
-
-    public void ReloadScene(){
-        clickSound.Play();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void QuitGame(){
