@@ -39,6 +39,8 @@ public class PlayerControler : MonoBehaviour
     [SerializeField]
     private GameObject mesh;
     [SerializeField]
+    private Gun Gun;
+    [SerializeField]
     private AudioSource gameMusic;
     [SerializeField]
     private AudioSource jumpSound;
@@ -52,6 +54,7 @@ public class PlayerControler : MonoBehaviour
     private InputAction turnAction;
     private InputAction jumpAction;
     private InputAction slideAction;
+    private InputAction shootAction;
 
     private CharacterController controller;
 
@@ -79,18 +82,21 @@ public class PlayerControler : MonoBehaviour
         turnAction = playerInput.actions["Turn"];
         jumpAction = playerInput.actions["Jump"];
         slideAction = playerInput.actions["Slide"];
+        shootAction = playerInput.actions["Shoot"];
     }
 
     private void OnEnable() {
         turnAction.performed += PlayerTurn;
         jumpAction.performed += PlayerJump;
         slideAction.performed += PlayerSlide;
+        shootAction.performed += PlayerShoot;
     }
 
     private void OnDisable() {
         turnAction.performed -= PlayerTurn;
         jumpAction.performed -= PlayerJump;
         slideAction.performed -= PlayerSlide;
+        shootAction.performed -= PlayerShoot;
     }
 
     private void Start() {
@@ -203,6 +209,10 @@ public class PlayerControler : MonoBehaviour
         controller.center = originalControllerCenter;
 
         sliding = false;
+    }
+
+    private void PlayerShoot(InputAction.CallbackContext context) {
+        Gun.Shoot();
     }
 
     private void Update() {
