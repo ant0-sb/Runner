@@ -36,8 +36,4 @@ public class LootLockerManager : MonoBehaviour
           playerConnected.Invoke(); 
     }
 
-    public void QuitGame(){
-        Debug.Log("Quitting game...");
-        Application.Quit();
-    }
 }

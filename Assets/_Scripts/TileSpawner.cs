@@ -9,7 +9,7 @@ public class TileSpawner : MonoBehaviour
     /// Number of tiles to spawn at the beginning
     /// </summary>
     [SerializeField]
-    private int tileStartCount = 10; 
+    private int tileStartCount = 5;
     
     /// <summary>
     /// Min nb of straight tiles (avoid endlessly going straight)
@@ -77,6 +77,16 @@ public class TileSpawner : MonoBehaviour
         //current direction, on which we apply the rotation of the next tile so that it points in the correct direction (Vector3.up is the Y axis on which we rotate)
 
         prevTile = GameObject.Instantiate(tile.gameObject, currentTileLocation, newTileRotation); 
+        //changing tile color according if player WorldPreference == 1
+        if (PlayerPrefs.GetInt("WorldPreference") == 1) { //red world
+            prevTile.GetComponent<Renderer>().material.color = new Color(1f, 0.5f, 0.5f);
+        }
+        else if (PlayerPrefs.GetInt("WorldPreference") == 2) { //green world
+            prevTile.GetComponent<Renderer>().material.color = new Color(0.5f, 1f, 0.5f);
+        }
+        else if (PlayerPrefs.GetInt("WorldPreference") == 3) { //blue world
+            prevTile.GetComponent<Renderer>().material.color = new Color(0.5f, 0.5f, 1f);
+        }
         currentTiles.Add(prevTile);
 
         if (spawnObstacle) SpawnObstacle();
