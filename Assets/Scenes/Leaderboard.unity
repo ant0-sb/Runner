@@ -272,7 +272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afdfe8d45002d6e4197ba9dbefd7f79f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneTransitionSound: {fileID: 21924397}
+  clickSound: {fileID: 21924397}
 --- !u!114 &21924399
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -473,7 +473,7 @@ GameObject:
   - component: {fileID: 379894672}
   - component: {fileID: 379894671}
   m_Layer: 0
-  m_Name: GameOver Manager
+  m_Name: Leaderboard Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1820,7 +1820,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afdfe8d45002d6e4197ba9dbefd7f79f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneTransitionSound: {fileID: 845617374}
+  clickSound: {fileID: 845617374}
 --- !u!1 &848332778
 GameObject:
   m_ObjectHideFlags: 0
