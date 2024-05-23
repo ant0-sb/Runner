@@ -44,8 +44,11 @@ public class PlayerControler : MonoBehaviour
     private AudioSource gameMusic;
     [SerializeField]
     private AudioSource jumpSound;
+    [SerializeField]
+    private Animator transition;
+    
 
-
+    private bool isGroundedAlreadyChecked = false;
     private float gravity;
     private Vector3 movementDirection = Vector3.forward;
     private Vector3 playerVelocity;
@@ -217,10 +220,12 @@ public class PlayerControler : MonoBehaviour
 
     private void Update() {
         // casting a long ray to check if the player is "grounded" even if the player is jumping
-        if(!IsGrounded(20f)){
+        if(!IsGrounded(20f) && !isGroundedAlreadyChecked){
             GameOver();
+            isGroundedAlreadyChecked = true;
             return;
         }
+        if(isGroundedAlreadyChecked) return; // stops the player from falling
 
         //Score functionality
         score += scoreMultiplier * Time.deltaTime;
@@ -265,8 +270,8 @@ public class PlayerControler : MonoBehaviour
     }
 
     private void GameOver(){
-        gameMusic.Stop();
         Debug.Log("game over");
+        gameMusic.Stop();
         PlayerPrefs.SetInt("Score", (int)score);
         SceneManager.LoadScene("Leaderboard");
         gameObject.SetActive(false);
