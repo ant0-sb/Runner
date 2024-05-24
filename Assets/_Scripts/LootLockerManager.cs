@@ -7,9 +7,12 @@ public class LootLockerManager : MonoBehaviour
 {
     [SerializeField]
     private UnityEvent playerConnected;
+    [SerializeField]
+    private AudioSource menuSound;
 
     private IEnumerator Start(){
         bool connected =false;
+        menuSound.Play();
         LootLockerSDKManager.StartGuestSession((response)=>{
             if(!response.success) {
                 Debug.Log("Error starting LootLocker session");
