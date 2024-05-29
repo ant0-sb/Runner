@@ -41,8 +41,6 @@ public class PlayerControler : MonoBehaviour
     [SerializeField]
     private Gun Gun;
     [SerializeField]
-    private AudioSource gameMusic;
-    [SerializeField]
     private AudioSource jumpSound;
     [SerializeField]
     private Animator transition;
@@ -74,7 +72,14 @@ public class PlayerControler : MonoBehaviour
     private UnityEvent<int> gameOverEvent;
     [SerializeField]
     private UnityEvent<int> scoreUpdateEvent;
-
+    [SerializeField]
+    private UnityEvent shootingEvent;
+    [SerializeField]
+    private UnityEvent<bool> runningEvent;
+    [SerializeField]
+    private UnityEvent slidingEvent;
+    [SerializeField]
+    private UnityEvent<bool> musicEvent;
 
     private void Awake() {
         playerInput = GetComponent<PlayerInput>();
@@ -106,7 +111,7 @@ public class PlayerControler : MonoBehaviour
         playerSpeed = initialPlayerSpeed;
         gravity = initialGravityValue;
         StartCoroutine(ChangePlayerMaterial());
-        gameMusic.Play();
+        musicEvent.Invoke(true);
     }
 
     private IEnumerator ChangePlayerMaterial() {
@@ -182,6 +187,7 @@ public class PlayerControler : MonoBehaviour
             //SUVAT equation v^2 = vinit^2 + 2*acceleration*distance
             //-3 because gravity is negative
             controller.Move(playerVelocity * Time.deltaTime);
+            runningEvent.Invoke(false);
             jumpSound.Play();
         }
     }
@@ -190,6 +196,7 @@ public class PlayerControler : MonoBehaviour
         if (!sliding && IsGrounded()) {
             // Coroutine allows to wait for the animation to finish before setting the collider back to normal
             StartCoroutine(Slide());
+            slidingEvent.Invoke();
         }
     }
 
@@ -216,6 +223,7 @@ public class PlayerControler : MonoBehaviour
 
     private void PlayerShoot(InputAction.CallbackContext context) {
         Gun.Shoot();
+        shootingEvent.Invoke();
     }
 
     private void Update() {
@@ -234,6 +242,7 @@ public class PlayerControler : MonoBehaviour
 
         if (IsGrounded() && playerVelocity.y < 0) {
             playerVelocity.y = 0f;
+            runningEvent.Invoke(true);
         }
 
         playerVelocity.y += gravity * Time.deltaTime;
@@ -271,9 +280,9 @@ public class PlayerControler : MonoBehaviour
 
     private void GameOver(){
         Debug.Log("game over");
-        gameMusic.Stop();
         PlayerPrefs.SetInt("Score", (int)score);
         SceneManager.LoadScene("Leaderboard");
+        musicEvent.Invoke(false);
         gameObject.SetActive(false);
     }
 

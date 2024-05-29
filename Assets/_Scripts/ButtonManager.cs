@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class ButtonManager : MonoBehaviour
 {
@@ -8,8 +9,22 @@ public class ButtonManager : MonoBehaviour
     private AudioSource buttonSound;
     public Animator transition;
     public float transitionTime = 1f;
+    private GameObject lastSelectedButton;
 
-    public void PlaySound(){
+    private void Update()
+    {
+        if (EventSystem.current.currentSelectedGameObject == null)
+        {
+            EventSystem.current.SetSelectedGameObject(lastSelectedButton);
+        }
+        else
+        {
+            lastSelectedButton = EventSystem.current.currentSelectedGameObject;
+        }
+    }
+
+    public void PlaySound()
+    {
         StartCoroutine(PlaySoundandWait());
     }
 

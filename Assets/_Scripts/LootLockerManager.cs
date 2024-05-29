@@ -12,6 +12,7 @@ public class LootLockerManager : MonoBehaviour
 
     private IEnumerator Start(){
         bool connected =false;
+        menuSound.loop = true;
         menuSound.Play();
         LootLockerSDKManager.StartGuestSession((response)=>{
             if(!response.success) {
@@ -38,5 +39,4 @@ public class LootLockerManager : MonoBehaviour
           yield return new WaitUntil(()=> connected);
           playerConnected.Invoke(); 
     }
-
 }
