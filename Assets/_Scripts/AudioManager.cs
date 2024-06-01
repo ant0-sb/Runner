@@ -8,6 +8,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource lavaGun;
     [SerializeField] private AudioSource lavaSlide;
     [SerializeField] private AudioSource lavaMusic;
+    [SerializeField] private AudioSource lavaAmbiance;
     [SerializeField] private AudioSource jungleRun;
     [SerializeField] private AudioSource jungleGun;
     [SerializeField] private AudioSource jungleSlide;
@@ -16,6 +17,18 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource futurGun;
     [SerializeField] private AudioSource futurSlide;
     [SerializeField] private AudioSource futurMusic;
+    [SerializeField] private AudioSource runDialogue;
+    [SerializeField] private AudioSource deathDialogue;
+
+    public void PlayStartDialogue()
+    {
+        runDialogue.Play();
+    }
+
+    public void PlayDeathDialogue()
+    {
+        deathDialogue.Play();
+    }
 
     public void PlayOrStopRun(bool run)
     {
@@ -78,11 +91,14 @@ public class AudioManager : MonoBehaviour
                 if (play)
                 {
                     lavaMusic.loop = true;
+                    lavaAmbiance.loop = true;
+                    lavaAmbiance.Play();
                     lavaMusic.Play();
                 }
                 else
                 {
                     lavaMusic.Stop();
+                    lavaAmbiance.Stop();
                 }
                 break;
             case 2:

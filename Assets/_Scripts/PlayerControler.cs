@@ -80,6 +80,8 @@ public class PlayerControler : MonoBehaviour
     private UnityEvent slidingEvent;
     [SerializeField]
     private UnityEvent<bool> musicEvent;
+    [SerializeField]
+    private UnityEvent startEvent;
 
     private void Awake() {
         playerInput = GetComponent<PlayerInput>();
@@ -112,6 +114,7 @@ public class PlayerControler : MonoBehaviour
         gravity = initialGravityValue;
         StartCoroutine(ChangePlayerMaterial());
         musicEvent.Invoke(true);
+        startEvent.Invoke();
     }
 
     private IEnumerator ChangePlayerMaterial() {
