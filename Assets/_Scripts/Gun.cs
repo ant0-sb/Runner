@@ -30,20 +30,20 @@ namespace TempleRun {
 
             if (Physics.Raycast(positionMax, SpawnPosition.forward, out RaycastHit hitObsUp, Mathf.Infinity, LayerMask)) {
                 TrailRenderer trail = Instantiate(BulletTrail, SpawnPosition.position, Quaternion.identity);
-                StartCoroutine(SpawnTrail(trail, hitObsUp));
+                StartCoroutine(CreateAndMoveBulletTrail(trail, hitObsUp));
             }
             else if (Physics.Raycast(positionMin, SpawnPosition.forward, out RaycastHit hitObsDown, Mathf.Infinity, LayerMask))
             {
                 TrailRenderer trail = Instantiate(BulletTrail, SpawnPosition.position, Quaternion.identity);
-                StartCoroutine(SpawnTrail(trail, hitObsDown));
+                StartCoroutine(CreateAndMoveBulletTrail(trail, hitObsDown));
             }
             else {
                 TrailRenderer trail = Instantiate(BulletTrail, SpawnPosition.position, Quaternion.identity);
-                StartCoroutine(SpawnTrailInfinite(trail, SpawnPosition.position + SpawnPosition.forward*100f));
+                StartCoroutine(CreateAndMoveBulletTrailInfinite(trail, SpawnPosition.position + SpawnPosition.forward*100f));
             }
         }
 
-        private IEnumerator SpawnTrail(TrailRenderer Trail, RaycastHit Hit) {
+        private IEnumerator CreateAndMoveBulletTrail(TrailRenderer Trail, RaycastHit Hit) {
             float time = 0;
             Vector3 startPosition = Trail.transform.position;
 
@@ -62,7 +62,7 @@ namespace TempleRun {
             Destroy(Trail.gameObject, Trail.time);
         }
 
-        private IEnumerator SpawnTrailInfinite(TrailRenderer Trail, Vector3 EndPosition) {
+        private IEnumerator CreateAndMoveBulletTrailInfinite(TrailRenderer Trail, Vector3 EndPosition) {
             float time = 0;
             Vector3 startPosition = Trail.transform.position;
 

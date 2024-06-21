@@ -44,6 +44,8 @@ public class PlayerControler : MonoBehaviour
     private AudioSource jumpSound;
     [SerializeField]
     private Animator transition;
+    [SerializeField]
+    private GameObject obstacleParticleSystemPrefab;
     
 
     private bool isGroundedAlreadyChecked = false;
@@ -297,6 +299,7 @@ public class PlayerControler : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit){
         if(((1<<hit.collider.gameObject.layer) & obstacleLayer)!=0) {
+            Instantiate(obstacleParticleSystemPrefab, hit.collider.gameObject.transform.position, transform.rotation);
             Destroy(hit.collider.gameObject);
             //Ajouter un son de collision et un genre "oof"
             DecreaseHealth();

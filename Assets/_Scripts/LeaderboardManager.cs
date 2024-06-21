@@ -22,7 +22,7 @@ public class LeaderboardManager : MonoBehaviour
 
     private int score = 0;
     private int leaderboardID = 22178;
-    private int leaderboardTopCount = 10;
+    private int leaderboardTopCount = 4;
 
 
     public void Start(){

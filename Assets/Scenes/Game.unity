@@ -2537,6 +2537,7 @@ MonoBehaviour:
   Gun: {fileID: 770493450}
   jumpSound: {fileID: 792095144}
   transition: {fileID: 1794685352}
+  obstacleParticleSystemPrefab: {fileID: 1107297630909973916, guid: a94105a7908049f43affc7cadad3fbcd, type: 3}
   healthBar: {fileID: 1003688020}
   turnEvent:
     m_PersistentCalls:

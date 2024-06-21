@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1685936030025658471}
   - component: {fileID: -8678446666079049651}
   m_Layer: 0
-  m_Name: ShootEffect
+  m_Name: ShootTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
