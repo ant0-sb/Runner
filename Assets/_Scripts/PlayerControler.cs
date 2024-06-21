@@ -63,7 +63,11 @@ public class PlayerControler : MonoBehaviour
 
     private bool sliding = false;
     private float score = 0;
+
+    private int maxHealth = 5;
+    private int currentHealth;
     
+    public HealthBar healthBar;
 
 
     [SerializeField]
@@ -111,6 +115,8 @@ public class PlayerControler : MonoBehaviour
 
     private void Start() {
         playerSpeed = initialPlayerSpeed;
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
         gravity = initialGravityValue;
         StartCoroutine(ChangePlayerMaterial());
         musicEvent.Invoke(true);
@@ -290,8 +296,19 @@ public class PlayerControler : MonoBehaviour
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit){
-        if(((1<<hit.collider.gameObject.layer) & obstacleLayer)!=0) GameOver();  
+        if(((1<<hit.collider.gameObject.layer) & obstacleLayer)!=0) {
+            Destroy(hit.collider.gameObject);
+            //Ajouter un son de collision et un genre "oof"
+            DecreaseHealth();
+        } 
+    }
+
+    private void DecreaseHealth() {
+        currentHealth--;
+        healthBar.setHealth(currentHealth);
+        if (currentHealth == 0) {
+            GameOver();
+        }
     }
 }
-
 }
