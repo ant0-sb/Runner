@@ -50,9 +50,14 @@ public class TileSpawner : MonoBehaviour
     /// </summary>
     private List<GameObject> currentObstacles;
 
+    public Material[] tileTypes;
+    public Material[] skies;
+
     private void Start() { //initialisation of all variables 
         currentTiles = new List<GameObject>();
         currentObstacles = new List<GameObject>();
+
+        RenderSettings.skybox = skies[PlayerPrefs.GetInt("WorldPreference")-1];
 
         Random.InitState(System.DateTime.Now.Millisecond); //random seed : chosen the actual date, so always a unique one when the game is run
 
@@ -78,15 +83,7 @@ public class TileSpawner : MonoBehaviour
 
         prevTile = GameObject.Instantiate(tile.gameObject, currentTileLocation, newTileRotation); 
         //changing tile color according if player WorldPreference == 1
-        if (PlayerPrefs.GetInt("WorldPreference") == 1) { //red world
-            prevTile.GetComponent<Renderer>().material.color = new Color(1f, 0.5f, 0.5f);
-        }
-        else if (PlayerPrefs.GetInt("WorldPreference") == 2) { //green world
-            prevTile.GetComponent<Renderer>().material.color = new Color(0.5f, 1f, 0.5f);
-        }
-        else if (PlayerPrefs.GetInt("WorldPreference") == 3) { //blue world
-            prevTile.GetComponent<Renderer>().material.color = new Color(0.5f, 0.5f, 1f);
-        }
+        prevTile.GetComponent<Renderer>().material = tileTypes[PlayerPrefs.GetInt("WorldPreference")-1];
         currentTiles.Add(prevTile);
 
         if (spawnObstacle) SpawnObstacle();
