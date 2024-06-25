@@ -46,6 +46,10 @@ public class PlayerControler : MonoBehaviour
     private Animator transition;
     [SerializeField]
     private GameObject obstacleParticleSystemPrefab;
+    [SerializeField]
+    private Light spotlight1; // Référence au premier projecteur
+    [SerializeField]
+    private Light spotlight2; // Référence au deuxième projecteur
     
 
     private bool isGroundedAlreadyChecked = false;
@@ -123,6 +127,8 @@ public class PlayerControler : MonoBehaviour
         StartCoroutine(ChangePlayerMaterial());
         musicEvent.Invoke(true);
         startEvent.Invoke();
+        UpdateSpotlights();
+
     }
 
     private IEnumerator ChangePlayerMaterial() {
@@ -267,7 +273,17 @@ public class PlayerControler : MonoBehaviour
         if (animator.speed < 1.25f){
             animator.speed += (1/playerSpeed)*Time.deltaTime; //increases the animation speed as the player speed increases to make the game more challenging
         }
+        UpdateSpotlights();
     }
+    private void UpdateSpotlights() {
+            // Assurer que les projecteurs suivent la position du joueur
+            spotlight1.transform.position = transform.position;
+            spotlight2.transform.position = transform.position;
+
+            // Assurer que les projecteurs suivent l'orientation du joueur
+            spotlight1.transform.rotation = transform.rotation;
+            spotlight2.transform.rotation = transform.rotation;
+        }
 
     private bool IsGrounded(float length = 0.2f) {
         Vector3 raycastOriginFirst = transform.position;

@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Leaderboard.unity
     guid: 1868bdc17c7c5044aa90c43237e967f0
+  - enabled: 1
+    path: Assets/Scenes/Charging.unity
+    guid: cb208c49a2a8aa0488ced2cf3c3ede9e
   m_configObjects: {}

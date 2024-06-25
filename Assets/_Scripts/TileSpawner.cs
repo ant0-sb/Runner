@@ -81,10 +81,12 @@ public class TileSpawner : MonoBehaviour
         Quaternion newTileRotation = tile.gameObject.transform.rotation * Quaternion.LookRotation(currentTileDirection, Vector3.up);
         //current direction, on which we apply the rotation of the next tile so that it points in the correct direction (Vector3.up is the Y axis on which we rotate)
 
-        prevTile = GameObject.Instantiate(tile.gameObject, currentTileLocation, newTileRotation); 
+        prevTile = GameObject.Instantiate(tile.gameObject, currentTileLocation, newTileRotation);
+         
         //changing tile color according if player WorldPreference == 1
         prevTile.GetComponent<Renderer>().material = tileTypes[PlayerPrefs.GetInt("WorldPreference")-1];
         currentTiles.Add(prevTile);
+        
 
         if (spawnObstacle) SpawnObstacle();
 
