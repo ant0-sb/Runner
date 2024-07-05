@@ -315,8 +315,18 @@ public class PlayerControler : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit){
         if(((1<<hit.collider.gameObject.layer) & obstacleLayer)!=0) {
-            Instantiate(obstacleParticleSystemPrefab, hit.collider.gameObject.transform.position, transform.rotation);
+            Debug.Log("Hit an obstacle");
+            Texture objectTexture = hit.collider.gameObject.GetComponent<Renderer>().material.mainTexture;
+            GameObject particleSystemInstance = Instantiate(obstacleParticleSystemPrefab, hit.collider.gameObject.transform.position, transform.rotation);
+    
+            // Appliquer la texture du matériau de l'objet au système de particules
+            if (objectTexture != null) {
+                var particleMaterial = particleSystemInstance.GetComponent<ParticleSystemRenderer>().material;
+                particleMaterial.mainTexture = objectTexture;
+            }
+    
             Destroy(hit.collider.gameObject);
+    
             //Ajouter un son de collision et un genre "oof"
             DecreaseHealth();
         } 
