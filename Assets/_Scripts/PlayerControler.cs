@@ -31,6 +31,8 @@ public class PlayerControler : MonoBehaviour
     [SerializeField]
     private Animator animator;
     [SerializeField]
+    private AnimationClip runAnimationClip;
+    [SerializeField]
     private AnimationClip slideAnimationClip;
     [SerializeField]
     private float scoreMultiplier =10f;
@@ -65,9 +67,11 @@ public class PlayerControler : MonoBehaviour
 
     private CharacterController controller;
 
+    private int runningAnimationId;
     private int slidingAnimationId;
 
     private bool sliding = false;
+    private bool isRunning = false;
     private float score = 0;
 
     private int maxHealth = 5;
@@ -218,6 +222,7 @@ public class PlayerControler : MonoBehaviour
     }
 
     private IEnumerator Slide() {
+        isRunning = true;
         sliding = true;
 
         //shrink the collider
@@ -236,11 +241,19 @@ public class PlayerControler : MonoBehaviour
         controller.center = originalControllerCenter;
 
         sliding = false;
+        isRunning = false;
     }
 
     private void PlayerShoot(InputAction.CallbackContext context) {
         Gun.Shoot();
         shootingEvent.Invoke();
+    }
+
+    private IEnumerator Run() {
+        isRunning = true;
+        animator.Play(runningAnimationId);
+        yield return new WaitForSeconds(runAnimationClip.length / animator.speed);
+        isRunning = false;
     }
 
     private void Update() {
@@ -264,6 +277,9 @@ public class PlayerControler : MonoBehaviour
 
         playerVelocity.y += gravity * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
+        if (!isRunning && !sliding) {
+            StartCoroutine(Run());
+        }
 
         if (playerSpeed < maximumPlayerSpeed) {
             playerSpeed += playerSpeedIncreaseRate * Time.deltaTime;

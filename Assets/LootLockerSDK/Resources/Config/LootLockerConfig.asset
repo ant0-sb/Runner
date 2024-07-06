@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: LootLockerConfig
   m_EditorClassIdentifier: 
   apiKey: dev_7ebaeb03e7364abf942abc9a59f6d5ba
-  token: 62e8497faf79de3b25ec181d3792b33306d6e38b
+  token: 675b914fb07c009c9c9844fc3e89b2359bb19114
   adminToken: 
   refreshToken: 
   domainKey: c5aaxpll
   gameID: 0
   game_version: 1.0.0.0
   sdk_version: 2.1.5
-  deviceID: 98a714f2-126d-48b8-85da-c58b3cef6711
+  deviceID: 1d1f845e-3d5b-4dc5-b1d9-ae1e0d4d035a
   url: https://api.lootlocker.io/v1
   adminUrl: https://c5aaxpll.api.lootlocker.io/admin
   playerUrl: https://c5aaxpll.api.lootlocker.io/player

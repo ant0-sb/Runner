@@ -5,6 +5,7 @@ namespace TempleRun { //allows every file under it to access each other
 
 public class TileSpawner : MonoBehaviour
 {
+    public GameObject test;
     /// <summary>
     /// Number of tiles to spawn at the beginning
     /// </summary>
@@ -42,7 +43,6 @@ public class TileSpawner : MonoBehaviour
     /// Keep track of the last tile, at the moment of turning for exemple
     /// </summary>
     private GameObject prevTile;
-
     private List<GameObject> currentTiles;
 
     /// <summary>
@@ -52,6 +52,8 @@ public class TileSpawner : MonoBehaviour
 
     public Material[] tileTypes;
     public Material[] skies;
+
+    public GameObject join;
 
     private void Start() { //initialisation of all variables 
         currentTiles = new List<GameObject>();
@@ -67,6 +69,8 @@ public class TileSpawner : MonoBehaviour
         }
 
         SpawnTile(SelectRandomGameObjectFromList(turnTiles).GetComponent<Tile>());
+
+        currentTiles[currentTiles.Count-1].transform.GetChild(0).gameObject.GetComponent<Renderer>().material = tileTypes[PlayerPrefs.GetInt("WorldPreference")-1];
     }
 
     /// <summary>
@@ -86,7 +90,6 @@ public class TileSpawner : MonoBehaviour
         //changing tile color according if player WorldPreference == 1
         prevTile.GetComponent<Renderer>().material = tileTypes[PlayerPrefs.GetInt("WorldPreference")-1];
         currentTiles.Add(prevTile);
-        
 
         if (spawnObstacle) SpawnObstacle();
 
@@ -95,6 +98,9 @@ public class TileSpawner : MonoBehaviour
             //moving the "currentLocation" 1 straight tile forward in the current direction
             //calculus is for exemple : (4,1,10)*(0,0,1) -> (0,0,10) for a tile (lenght 10 units, width 4, height 1) that we add on currentTileLocation
             //(0,0,1) is the direction of going straight forward, (1,0,0) is going right
+        }
+        else {
+            tile.transform.GetChild(0).gameObject.GetComponent<Renderer>().material = tileTypes[PlayerPrefs.GetInt("WorldPreference")-1];
         }
     }
 
@@ -144,6 +150,7 @@ public class TileSpawner : MonoBehaviour
         }
 
         SpawnTile(SelectRandomGameObjectFromList(turnTiles).GetComponent<Tile>());
+
     }
 
     private void SpawnObstacle() {
