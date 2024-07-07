@@ -152,7 +152,7 @@ public class PlayerControler : MonoBehaviour
         yield return new WaitUntil(() => playerSkinRequest.HasValue);
         if (playerSkinRequest.Value) {
             if (UnityEngine.ColorUtility.TryParseHtmlString(color, out Color newColor)) {
-                mesh.GetComponent<MeshRenderer>().material.color = newColor;
+                GameObject.Find("Pistol").GetComponent<MeshRenderer>().material.color = newColor;
             }
         }
     }

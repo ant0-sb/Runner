@@ -44,6 +44,7 @@ public class TileSpawner : MonoBehaviour
     /// </summary>
     private GameObject prevTile;
     private List<GameObject> currentTiles;
+    private GameObject lastTile;
 
     /// <summary>
     /// All obstacles in the scene
@@ -69,8 +70,6 @@ public class TileSpawner : MonoBehaviour
         }
 
         SpawnTile(SelectRandomGameObjectFromList(turnTiles).GetComponent<Tile>());
-
-        currentTiles[currentTiles.Count-1].transform.GetChild(0).gameObject.GetComponent<Renderer>().material = tileTypes[PlayerPrefs.GetInt("WorldPreference")-1];
     }
 
     /// <summary>
@@ -99,8 +98,13 @@ public class TileSpawner : MonoBehaviour
             //calculus is for exemple : (4,1,10)*(0,0,1) -> (0,0,10) for a tile (lenght 10 units, width 4, height 1) that we add on currentTileLocation
             //(0,0,1) is the direction of going straight forward, (1,0,0) is going right
         }
-        else {
-            tile.transform.GetChild(0).gameObject.GetComponent<Renderer>().material = tileTypes[PlayerPrefs.GetInt("WorldPreference")-1];
+
+        lastTile = currentTiles[currentTiles.Count-1];
+
+        foreach (Transform child in lastTile.GetComponentsInChildren<Transform>()) {
+            if (child.GetComponent<Renderer>() != null) {
+                child.GetComponent<Renderer>().material = tileTypes[PlayerPrefs.GetInt("WorldPreference")-1];
+            }
         }
     }
 
