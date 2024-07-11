@@ -53,6 +53,7 @@ public class TileSpawner : MonoBehaviour
 
     public Material[] tileTypes;
     public Material[] skies;
+    
 
     public GameObject join;
 
@@ -163,6 +164,7 @@ public class TileSpawner : MonoBehaviour
         GameObject obstaclePrefab = SelectRandomGameObjectFromList(obstacles);
         Quaternion newObjectRotation = obstaclePrefab.gameObject.transform.rotation * Quaternion.LookRotation(currentTileDirection, Vector3.up);
         GameObject obstacle = Instantiate(obstaclePrefab, currentTileLocation, newObjectRotation);
+        
         currentObstacles.Add(obstacle);
     }
 
